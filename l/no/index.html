@@ -57,7 +57,7 @@
         <link rel="stylesheet" href="/include/fontawesome/css/brands.min.css"/>
         <link rel="stylesheet" href="/include/fontawesome/css/solid.min.css"/>
         <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
-        <link href='https://api.mapbox.com/mapbox-gl-js/v2.2.0/mapbox-gl.css' rel='stylesheet' />
+        <link href='https://api.mapbox.com/mapbox-gl-js/v3.1.2/mapbox-gl.css' rel='stylesheet' />
         <link rel="stylesheet" href="/include/elevation/L.Control.Heightgraph.css"/>
         <link rel="stylesheet" href="/include/controlwindow/L.Control.Window.css">
         <link rel="stylesheet" href="https://unpkg.com/leaflet-control-geocoder@2.3.0/dist/Control.Geocoder.css" />
@@ -154,17 +154,24 @@
                             <option value="MTB">Fjellsykkel</option>
                             <option value="Hiking-Alpine-SAC6">Løping/Tur</option>
                             <option value="Car-FastEco">Motorsykkel</option>
+                            <option value="river">Water</option>
+                            <option value="rail">Railway</option>
                         </select></td>
                     </tr>
                     <tr>
                         <td colspan="2"><label for="routing-input"><b>Rute (følg veier)</b></label> <input id="routing-input" type="checkbox" name="routing" checked></td>
                     </tr>
                     <tr>
+                        <td colspan="2"><label for="private-input"><b>Allow private roads</b> <i
+                                    class="fas fa-triangle-exclamation"></i></label> <input id="private-input"
+                                type="checkbox" name="private"></td>
+                    </tr>
+                    <tr>
                         <td colspan="2"><label for="edit-time-strategy"><b>Administrasjon av tidsdata</b></label></td>
                     </tr>
                     <tr>
-                        <td colspan="2"><input type="radio" id="edit-avg" name="edit-time-strategy" value="edit-avg" checked><label for="edit-avg">Bevar gjennomsnittlig hastighet</label><br>
-                        <input type="radio" id="edit-keep" name="edit-time-strategy" value="edit-keep"><label for="edit-keep">Bevar de opprinnelige tidsstemplene</label></td>
+                        <td colspan="2"><input type="radio" id="edit-avg" name="edit-time-strategy" value="edit-avg" checked><label for="edit-avg">Preserve the average speed</label><br>
+                        <input type="radio" id="edit-keep" name="edit-time-strategy" value="edit-keep"><label for="edit-keep">Preserve the original timestamps</label></td>
                     </tr>
                 </table>
             </div>
@@ -407,8 +414,8 @@
         </div>
         <div id="extract-content" class="popup-content">
             Velg hva du vil trekke ut<br>
-            <input type="radio" id="extract-track" name="extract-choice" value="extract-track" checked><label for="extract-track">Spor</label><br>
-            <input type="radio" id="extract-segment" name="extract-choice" value="extract-segment"><label for="extract-segment">Spor segmenter</label><br>
+            <input type="radio" id="extract-track" name="extract-choice" value="extract-track" checked><label for="extract-track">Tracks</label><br>
+            <input type="radio" id="extract-segment" name="extract-choice" value="extract-segment"><label for="extract-segment">Track segments</label><br>
             <div id="extract-ok" class="panels custom-button normal-button">Ok</div>
             <div id="extract-cancel" class="panels custom-button normal-button"><b>Avbryt</b></div>
         </div>
@@ -435,9 +442,9 @@
         <div id="zone-delete-content" class="popup-content">
             Velg hva som skal slettes<br>
             <input type="checkbox" id="zone-delete-points" checked><label for="zone-delete-points">Sporingspunkt</label>
-            <input type="checkbox" id="zone-delete-waypoints" checked><label for="zone-delete-waypoints">Veipunkter</label><br>
+            <input type="checkbox" id="zone-delete-waypoints" checked><label for="zone-delete-waypoints">Waypoints</label><br>
             <input type="radio" name="where" id="zone-delete-inside" checked><label for="zone-delete-inside">Innsiden av utvalg</label>
-            <input type="radio" name="where" id="zone-delete-outside"><label for="zone-delete-outside">Utsiden av utvalg</label><br>
+            <input type="radio" name="where" id="zone-delete-outside"><label for="zone-delete-outside">Outside selection</label><br>
             <div id="zone-delete-ok" class="panels custom-button normal-button">Fortsett</div>
             <div id="zone-delete-cancel" class="panels custom-button normal-button"><b>Avbryt</b></div>
         </div>
@@ -514,7 +521,7 @@
             <div id="speed-text">Hastighet</div>
             <div id="pace-text">Tempo</div>
             <div id="start-text">Start</div>
-            <div id="experimental-info-text">Generer fart ut fra skråning og aktivitetstype<br><b><i class="fas fa-exclamation-triangle"></i> sletter all eksisterende tidsdata</b></div>
+            <div id="experimental-info-text">Generate speed considering the slope and the activity type<br><b><i class="fas fa-exclamation-triangle"></i> erases all existing time data</b></div>
         </div>
         <div id="waypoint-popup-text">
             <div id="empty-title-text">tom tittel</div>
@@ -571,6 +578,7 @@
             <div id="custom-text">Custom</div>
             <div id="world-text">World</div>
             <div id="countries-text">Countries</div>
+            <div id="bulgaria-text">Bulgaria</div>
             <div id="finland-text">Finland</div>
             <div id="france-text">France</div>
             <div id="new-zealand-text">New Zealand</div>
@@ -618,6 +626,7 @@
             <div id="tram-stop-text">Tram Stop</div>
             <div id="bus-stop-text">Bus Stop</div>
             <div id="ferry-text">Ferry Terminal</div>
+            <div id="barrier-text">Barrier</div>
         </div>
         <h1>online gpx editor</h1>
         <h1>online gpx viewer</h1>
@@ -632,6 +641,30 @@
         <h1>rediger Strava aktiviteter</h1>
         <h1>rett opp Strava aktiviteter</h1>
         <h1>slå sammen Strave aktiviteter</h1>
+        <div id="new-website-text" style="text-align: left; width:fit-content; max-width: 80dvw; white-space: wrap; padding: 6px;">
+            <p style="text-align: center;"><b>BIG NEWS!</b> 🎉</p>
+
+            I’ve spent the last few months rewriting gpx.studio from scratch and am thrilled to finally share it with you!<br><br>
+
+            Here are some highlights of the new version:
+            <ul>
+            <li>🖥️ A modern look with more accessible menus</li>
+            <li>🌎 A much smoother map experience, now supporting 3D view</li>
+            <li>📈 An interactive elevation profile with more detailed information</li>
+            <li>🛠️ Tools applicable to multiple GPX files at once</li>
+            <li>↔️ An application-wide undo-redo functionality</li>
+            </ul><br>
+
+            🙏 A huge thank you to the community that made this possible through donations, translations and feature suggestions.<br><br>
+
+            🤝 You can help us transition to the future website by:
+            <ul>
+            <li>🐞 Trying it out and reporting any bugs you find</li>
+            <li>📝 Providing feedback on the textual content (and later translating it into other languages)</li>
+            </ul>
+
+            <p style="text-align: center;">🔗 Discover the future of gpx.studio <a href="https://gpx.studio/gpx.studio" target="_blank">here</a>!</p>
+        </div>
         </div>
     </body>
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
@@ -639,7 +672,8 @@
     <script type="text/javascript" src="/include/icon/Leaflet.Icon.Glyph.js"></script>
     <script type="text/javascript" src="/js/data.js"></script>
     <script type="module" src="/include/gpx/gpx.js"></script>
-    <script src='https://api.mapbox.com/mapbox-gl-js/v2.2.0/mapbox-gl.js'></script>
+    <script src='https://api.mapbox.com/mapbox-gl-js/v3.1.2/mapbox-gl.js'></script>
+    <script src='https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-language/v1.0.0/mapbox-gl-language.js'></script>
     <script type="text/javascript" src="/include/elevation/L.Control.Heightgraph.js"></script>
     <script type="text/javascript" src="/js/elevation.js"></script>
     <script type="text/javascript" src="/include/textpath/leaflet.textpath.js"></script>

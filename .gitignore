@@ -1,3 +1,4 @@
 *.gpx
 res/mapbox_token.txt
 .DS_Store
+.vscode

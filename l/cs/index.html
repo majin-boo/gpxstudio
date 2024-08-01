@@ -57,7 +57,7 @@
         <link rel="stylesheet" href="/include/fontawesome/css/brands.min.css"/>
         <link rel="stylesheet" href="/include/fontawesome/css/solid.min.css"/>
         <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
-        <link href='https://api.mapbox.com/mapbox-gl-js/v2.2.0/mapbox-gl.css' rel='stylesheet' />
+        <link href='https://api.mapbox.com/mapbox-gl-js/v3.1.2/mapbox-gl.css' rel='stylesheet' />
         <link rel="stylesheet" href="/include/elevation/L.Control.Heightgraph.css"/>
         <link rel="stylesheet" href="/include/controlwindow/L.Control.Window.css">
         <link rel="stylesheet" href="https://unpkg.com/leaflet-control-geocoder@2.3.0/dist/Control.Geocoder.css" />
@@ -154,17 +154,24 @@
                             <option value="MTB">Horské kolo</option>
                             <option value="Hiking-Alpine-SAC6">Chůze/běh</option>
                             <option value="Car-FastEco">Motocykl</option>
+                            <option value="river">Voda</option>
+                            <option value="rail">Železnice</option>
                         </select></td>
                     </tr>
                     <tr>
                         <td colspan="2"><label for="routing-input"><b>Trasování (po silnicích)</b></label> <input id="routing-input" type="checkbox" name="routing" checked></td>
                     </tr>
                     <tr>
+                        <td colspan="2"><label for="private-input"><b>Povolit soukromé komunikace</b> <i
+                                    class="fas fa-triangle-exclamation"></i></label> <input id="private-input"
+                                type="checkbox" name="private"></td>
+                    </tr>
+                    <tr>
                         <td colspan="2"><label for="edit-time-strategy"><b>Správa časových údajů</b></label></td>
                     </tr>
                     <tr>
                         <td colspan="2"><input type="radio" id="edit-avg" name="edit-time-strategy" value="edit-avg" checked><label for="edit-avg">Zachovat průměrnou rychlost</label><br>
-                        <input type="radio" id="edit-keep" name="edit-time-strategy" value="edit-keep"><label for="edit-keep">Zachovat původní časové značky</label></td>
+                        <input type="radio" id="edit-keep" name="edit-time-strategy" value="edit-keep"><label for="edit-keep"> Zachovat původní časové značky</label></td>
                     </tr>
                 </table>
             </div>
@@ -478,7 +485,7 @@
                     <option value="blue">Modrá</option>
                     <option value="purple">Fialová</option>
                     <option value="gray">Šedá</option>
-                    <option value="bluered">Modrá červená</option>
+                    <option value="bluered">Modro-červená</option>
                 </select><br>
                 <span>Zvolte minimální úroveň přiblížení pro vyžádání POI</span> <input id="poi-min-zoom-input" type="number" min="10" max="20"><br>
                 <span>Vyberte vrstvy, které chcete zobrazit v rozhraní</span>
@@ -571,6 +578,7 @@
             <div id="custom-text">Vlastní</div>
             <div id="world-text">Svět</div>
             <div id="countries-text">Státy</div>
+            <div id="bulgaria-text">Bulharsko</div>
             <div id="finland-text">Finsko</div>
             <div id="france-text">Francie</div>
             <div id="new-zealand-text">Nový Zéland</div>
@@ -618,6 +626,7 @@
             <div id="tram-stop-text">Zastávka tramvaje</div>
             <div id="bus-stop-text">Autobusová zastávka</div>
             <div id="ferry-text">Trajektový terminál</div>
+            <div id="barrier-text">Zábrana</div>
         </div>
         <h1>online gpx editor</h1>
         <h1>online gpx prohlížeč</h1>
@@ -632,6 +641,30 @@
         <h1>upraviť Strava aktivity</h1>
         <h1>opravit Strava sktivity</h1>
         <h1>sloučit Strava aktivity</h1>
+        <div id="new-website-text" style="text-align: left; width:fit-content; max-width: 80dvw; white-space: wrap; padding: 6px;">
+            <p style="text-align: center;"><b>BIG NEWS!</b> 🎉</p>
+
+            I’ve spent the last few months rewriting gpx.studio from scratch and am thrilled to finally share it with you!<br><br>
+
+            Here are some highlights of the new version:
+            <ul>
+            <li>🖥️ A modern look with more accessible menus</li>
+            <li>🌎 A much smoother map experience, now supporting 3D view</li>
+            <li>📈 An interactive elevation profile with more detailed information</li>
+            <li>🛠️ Tools applicable to multiple GPX files at once</li>
+            <li>↔️ An application-wide undo-redo functionality</li>
+            </ul><br>
+
+            🙏 A huge thank you to the community that made this possible through donations, translations and feature suggestions.<br><br>
+
+            🤝 You can help us transition to the future website by:
+            <ul>
+            <li>🐞 Trying it out and reporting any bugs you find</li>
+            <li>📝 Providing feedback on the textual content (and later translating it into other languages)</li>
+            </ul>
+
+            <p style="text-align: center;">🔗 Discover the future of gpx.studio <a href="https://gpx.studio/gpx.studio" target="_blank">here</a>!</p>
+        </div>
         </div>
     </body>
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
@@ -639,7 +672,8 @@
     <script type="text/javascript" src="/include/icon/Leaflet.Icon.Glyph.js"></script>
     <script type="text/javascript" src="/js/data.js"></script>
     <script type="module" src="/include/gpx/gpx.js"></script>
-    <script src='https://api.mapbox.com/mapbox-gl-js/v2.2.0/mapbox-gl.js'></script>
+    <script src='https://api.mapbox.com/mapbox-gl-js/v3.1.2/mapbox-gl.js'></script>
+    <script src='https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-language/v1.0.0/mapbox-gl-language.js'></script>
     <script type="text/javascript" src="/include/elevation/L.Control.Heightgraph.js"></script>
     <script type="text/javascript" src="/js/elevation.js"></script>
     <script type="text/javascript" src="/include/textpath/leaflet.textpath.js"></script>

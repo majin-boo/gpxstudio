@@ -57,7 +57,7 @@
         <link rel="stylesheet" href="/include/fontawesome/css/brands.min.css"/>
         <link rel="stylesheet" href="/include/fontawesome/css/solid.min.css"/>
         <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
-        <link href='https://api.mapbox.com/mapbox-gl-js/v2.2.0/mapbox-gl.css' rel='stylesheet' />
+        <link href='https://api.mapbox.com/mapbox-gl-js/v3.1.2/mapbox-gl.css' rel='stylesheet' />
         <link rel="stylesheet" href="/include/elevation/L.Control.Heightgraph.css"/>
         <link rel="stylesheet" href="/include/controlwindow/L.Control.Window.css">
         <link rel="stylesheet" href="https://unpkg.com/leaflet-control-geocoder@2.3.0/dist/Control.Geocoder.css" />
@@ -109,13 +109,13 @@
                 <div class="panels panels-val" id="points-val">0</div>
                 <div id="units-text" class="panels panels-info">Distance units</div>
                 <select id="units-input" name="panels panels-val units-input">
-                    <option value="km">Metric</option>
+                    <option value="km">Hệ mét</option>
                     <option value="mi">Imperial</option>
                 </select>
                 <div id="speed-units-text" class="panels panels-info">Velocity units</div>
                 <select id="speed-units-input" name="panels panels-val speed-units-input">
                     <option value="speed">Speed</option>
-                    <option value="pace">Pace</option>
+                    <option value="pace">Nhịp độ</option>
                 </select>
                 <div id="elevation-input" class="panels-button custom-button" title="Toggle the elevation profile"><i class="fas fa-minus"></i></div>
                 <div id="crop-container">
@@ -130,34 +130,41 @@
         <div id="buttons-bar" class="vcenter-leaflet">
             <div id="buttons" class="panels-container">
                 <div class="panels-button" id="edit" title="Edit track points"><i class="fas fa-pencil-alt custom-button"></i></div>
-                <div class="panels-button" id="edit-time" title="Edit time"><i class="fas fa-stopwatch custom-button"></i></div>
-                <div class="panels-button" id="reverse" title="Reverse"><i class="fas fa-exchange-alt custom-button"></i></div>
+                <div class="panels-button" id="edit-time" title="Chỉnh sửa Thời gian"><i class="fas fa-stopwatch custom-button"></i></div>
+                <div class="panels-button" id="reverse" title="Đảo ngược"><i class="fas fa-exchange-alt custom-button"></i></div>
                 <div class="panels-button" id="combine" title="Merge with another trace"><i class="fas fa-plus-circle custom-button"></i></div>
                 <div class="panels-button" id="extract" title="Extract tracks or track segments"><i class="fas fa-list-ul custom-button"></i></div>
-                <div class="panels-button" id="duplicate" title="Duplicate"><i class="fas fa-copy custom-button"></i></div>
-                <div class="panels-button" id="add-wpt" title="Add waypoint"><i class="fas fa-map-marker-alt custom-button"></i></div>
-                <div class="panels-button" id="reduce" title="Reduce number of track points"><i class="fas fa-compress-alt custom-button"></i></div>
-                <div class="panels-button" id="zone-delete" title="Delete all inside/outside rectangle selection"><i class="fas fa-vector-square custom-button"></i></div>
-                <div class="panels-button" id="hide" title="Hide/unhide the trace"><i class="fas fa-eye-slash custom-button"></i></div>
-                <div class="panels-button" id="color" title="Change color, opacity and width"><i class="fas fa-palette custom-button"></i></div>
-                <div class="panels-button" id="structure" title="Manage the file structure"><i class="fas fa-folder-tree custom-button"></i></div>
-                <div class="panels-button" id="delete" title="Delete"><i class="fas fa-trash-alt custom-button"></i></div>
+                <div class="panels-button" id="duplicate" title="Tạo bản sao"><i class="fas fa-copy custom-button"></i></div>
+                <div class="panels-button" id="add-wpt" title="Thêm waypoint"><i class="fas fa-map-marker-alt custom-button"></i></div>
+                <div class="panels-button" id="reduce" title="Giảm số lượng điểm"><i class="fas fa-compress-alt custom-button"></i></div>
+                <div class="panels-button" id="zone-delete" title="Xóa tất cả lựa chọn bên trong/bên ngoài hình chữ nhật"><i class="fas fa-vector-square custom-button"></i></div>
+                <div class="panels-button" id="hide" title="Ẩn/hiện vết"><i class="fas fa-eye-slash custom-button"></i></div>
+                <div class="panels-button" id="color" title="Thay đổi màu sắc, độ mờ và chiều rộng"><i class="fas fa-palette custom-button"></i></div>
+                <div class="panels-button" id="structure" title="Quản lý cấu trúc tập tin"><i class="fas fa-folder-tree custom-button"></i></div>
+                <div class="panels-button" id="delete" title="Xóa"><i class="fas fa-trash-alt custom-button"></i></div>
             </div>
             <div id="editing-options" class="panels-container">
-                <i id="toggle-editing-options" class="fas fa-minus panels-button custom-button toggle-on" title="Toggle editing options"></i>
+                <i id="toggle-editing-options" class="fas fa-minus panels-button custom-button toggle-on" title="Chuyển đổi tùy chọn chỉnh sửa"></i>
                 <table class="panels">
                     <tr>
                         <td><b>Activity</b></td>
                         <td><select name="activity" id="activity-input" class="close-spacing">
-                            <option value="Trekking-dry">Bike</option>
-                            <option value="fastbike">Racing bike</option>
-                            <option value="MTB">Mountain bike</option>
-                            <option value="Hiking-Alpine-SAC6">Run/hike</option>
-                            <option value="Car-FastEco">Motorcycle</option>
+                            <option value="Trekking-dry">Đạp xe</option>
+                            <option value="fastbike">Xe đạp đua</option>
+                            <option value="MTB">Xe đạp leo núi</option>
+                            <option value="Hiking-Alpine-SAC6">Chạy/đi bộ</option>
+                            <option value="Car-FastEco">Xe máy</option>
+                            <option value="river">Nước</option>
+                            <option value="rail">Đường sắt</option>
                         </select></td>
                     </tr>
                     <tr>
                         <td colspan="2"><label for="routing-input"><b>Routing (follow roads)</b></label> <input id="routing-input" type="checkbox" name="routing" checked></td>
+                    </tr>
+                    <tr>
+                        <td colspan="2"><label for="private-input"><b>Allow private roads</b> <i
+                                    class="fas fa-triangle-exclamation"></i></label> <input id="private-input"
+                                type="checkbox" name="private"></td>
                     </tr>
                     <tr>
                         <td colspan="2"><label for="edit-time-strategy"><b>Time data management</b></label></td>
@@ -174,7 +181,7 @@
                 <input id="street-view-provider-google" type="radio" name="street-view-provider" value="google"> <label for="street-view-provider-google">Google</label>
                 <input id="street-view-provider-mapillary" type="radio" name="street-view-provider" value="mapillary" checked> <label for="street-view-provider-mapillary">Mapillary</label>
             </div>
-            <i id="street-view" class="fas fa-street-view custom-button" style="padding: 6px; font-size: 14px;" title="Open Mapillary or Google Street View"></i>
+            <i id="street-view" class="fas fa-street-view custom-button" style="padding: 6px; font-size: 14px;" title="Mở Mapillary hoặc Google Street View"></i>
         </div>
         <label id="chevrons" class="dontselect"><input type="checkbox" id="show-chevrons" class="custom-button" style="vertical-align: middle;"> Direction markers</label>
         <label id="dist-markers" class="dontselect"><input type="checkbox" id="show-dist-markers" class="custom-button" style="vertical-align: middle;"> Distance markers</label>
@@ -460,8 +467,8 @@
                     <tr>
                         <td><label for="layer-type">Layer type</label></td>
                         <td><select id="layer-type">
-                            <option value="baselayer">Basemap</option>
-                            <option value="overlay">Overlay</option>
+                            <option value="baselayer">Bản đồ cơ sở</option>
+                            <option value="overlay">Lớp phủ</option>
                         </select></td>
                     </tr>
                     <tr>
@@ -500,8 +507,8 @@
         <div id="unit-feet-text">ft</div>
         <div id="unit-hours-text">h</div>
         <div id="unit-minutes-text">min</div>
-        <div id="duplicate-text">Duplicate</div>
-        <div id="delete-text">Delete</div>
+        <div id="duplicate-text">Tạo bản sao</div>
+        <div id="delete-text">Xóa</div>
         <div id="ok-button-text">Ok</div>
         <div id="cancel-button-text">Cancel</div>
         <div id="search-input-text">Search...</div>
@@ -512,7 +519,7 @@
         <span id="segment-text">Segment</span>
         <div id="edit-speed-popup-text">
             <div id="speed-text">Speed</div>
-            <div id="pace-text">Pace</div>
+            <div id="pace-text">Nhịp độ</div>
             <div id="start-text">Start</div>
             <div id="experimental-info-text">Generate speed considering the slope and the activity type<br><b><i class="fas fa-exclamation-triangle"></i> erases all existing time data</b></div>
         </div>
@@ -571,6 +578,7 @@
             <div id="custom-text">Custom</div>
             <div id="world-text">World</div>
             <div id="countries-text">Countries</div>
+            <div id="bulgaria-text">Bulgaria</div>
             <div id="finland-text">Finland</div>
             <div id="france-text">France</div>
             <div id="new-zealand-text">New Zealand</div>
@@ -618,6 +626,7 @@
             <div id="tram-stop-text">Tram Stop</div>
             <div id="bus-stop-text">Bus Stop</div>
             <div id="ferry-text">Ferry Terminal</div>
+            <div id="barrier-text">Barrier</div>
         </div>
         <h1>online gpx editor</h1>
         <h1>online gpx viewer</h1>
@@ -632,6 +641,30 @@
         <h1>edit Strava activity</h1>
         <h1>correct Strava activity</h1>
         <h1>merge Strava activities</h1>
+        <div id="new-website-text" style="text-align: left; width:fit-content; max-width: 80dvw; white-space: wrap; padding: 6px;">
+            <p style="text-align: center;"><b>BIG NEWS!</b> 🎉</p>
+
+            I’ve spent the last few months rewriting gpx.studio from scratch and am thrilled to finally share it with you!<br><br>
+
+            Here are some highlights of the new version:
+            <ul>
+            <li>🖥️ A modern look with more accessible menus</li>
+            <li>🌎 A much smoother map experience, now supporting 3D view</li>
+            <li>📈 An interactive elevation profile with more detailed information</li>
+            <li>🛠️ Tools applicable to multiple GPX files at once</li>
+            <li>↔️ An application-wide undo-redo functionality</li>
+            </ul><br>
+
+            🙏 A huge thank you to the community that made this possible through donations, translations and feature suggestions.<br><br>
+
+            🤝 You can help us transition to the future website by:
+            <ul>
+            <li>🐞 Trying it out and reporting any bugs you find</li>
+            <li>📝 Providing feedback on the textual content (and later translating it into other languages)</li>
+            </ul>
+
+            <p style="text-align: center;">🔗 Discover the future of gpx.studio <a href="https://gpx.studio/gpx.studio" target="_blank">here</a>!</p>
+        </div>
         </div>
     </body>
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
@@ -639,7 +672,8 @@
     <script type="text/javascript" src="/include/icon/Leaflet.Icon.Glyph.js"></script>
     <script type="text/javascript" src="/js/data.js"></script>
     <script type="module" src="/include/gpx/gpx.js"></script>
-    <script src='https://api.mapbox.com/mapbox-gl-js/v2.2.0/mapbox-gl.js'></script>
+    <script src='https://api.mapbox.com/mapbox-gl-js/v3.1.2/mapbox-gl.js'></script>
+    <script src='https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-language/v1.0.0/mapbox-gl-language.js'></script>
     <script type="text/javascript" src="/include/elevation/L.Control.Heightgraph.js"></script>
     <script type="text/javascript" src="/js/elevation.js"></script>
     <script type="text/javascript" src="/include/textpath/leaflet.textpath.js"></script>

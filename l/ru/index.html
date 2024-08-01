@@ -57,7 +57,7 @@
         <link rel="stylesheet" href="/include/fontawesome/css/brands.min.css"/>
         <link rel="stylesheet" href="/include/fontawesome/css/solid.min.css"/>
         <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
-        <link href='https://api.mapbox.com/mapbox-gl-js/v2.2.0/mapbox-gl.css' rel='stylesheet' />
+        <link href='https://api.mapbox.com/mapbox-gl-js/v3.1.2/mapbox-gl.css' rel='stylesheet' />
         <link rel="stylesheet" href="/include/elevation/L.Control.Heightgraph.css"/>
         <link rel="stylesheet" href="/include/controlwindow/L.Control.Window.css">
         <link rel="stylesheet" href="https://unpkg.com/leaflet-control-geocoder@2.3.0/dist/Control.Geocoder.css" />
@@ -101,21 +101,21 @@
                 <div class="panels panels-val" id="speed-val"></div>
                 <div class="panels panels-info" id="duration">Время в движении</div>
                 <div class="panels panels-val" id="duration-val"></div>
-                <div class="panels panels-info" id="tracks">Tracks</div>
+                <div class="panels panels-info" id="tracks">Треки</div>
                 <div class="panels panels-val" id="tracks-val">0</div>
-                <div class="panels panels-info" id="segments">Track segments</div>
+                <div class="panels panels-info" id="segments">Сегменты треков</div>
                 <div class="panels panels-val" id="segments-val">0</div>
                 <div class="panels panels-info" id="points">Точки трека</div>
                 <div class="panels panels-val" id="points-val">0</div>
-                <div id="units-text" class="panels panels-info">Distance units</div>
+                <div id="units-text" class="panels panels-info">Единицы измерения расстояния</div>
                 <select id="units-input" name="panels panels-val units-input">
                     <option value="km">Метрические</option>
                     <option value="mi">Имперские</option>
                 </select>
-                <div id="speed-units-text" class="panels panels-info">Velocity units</div>
+                <div id="speed-units-text" class="panels panels-info">Единицы измерения скорости</div>
                 <select id="speed-units-input" name="panels panels-val speed-units-input">
                     <option value="speed">Скорость</option>
-                    <option value="pace">Pace</option>
+                    <option value="pace">Темп</option>
                 </select>
                 <div id="elevation-input" class="panels-button custom-button" title="Переключить профиль высоты"><i class="fas fa-minus"></i></div>
                 <div id="crop-container">
@@ -144,20 +144,27 @@
                 <div class="panels-button" id="delete" title="Удалить"><i class="fas fa-trash-alt custom-button"></i></div>
             </div>
             <div id="editing-options" class="panels-container">
-                <i id="toggle-editing-options" class="fas fa-minus panels-button custom-button toggle-on" title="Toggle editing options"></i>
+                <i id="toggle-editing-options" class="fas fa-minus panels-button custom-button toggle-on" title="Переключить настройки редактирования"></i>
                 <table class="panels">
                     <tr>
-                        <td><b>Activity</b></td>
+                        <td><b>Активность</b></td>
                         <td><select name="activity" id="activity-input" class="close-spacing">
                             <option value="Trekking-dry">Велосипед</option>
                             <option value="fastbike">Гоночный велосипед</option>
                             <option value="MTB">Горный велосипед</option>
-                            <option value="Hiking-Alpine-SAC6">Run/hike</option>
+                            <option value="Hiking-Alpine-SAC6">Бег/Хайкинг</option>
                             <option value="Car-FastEco">Мотоцикл</option>
+                            <option value="river">Water</option>
+                            <option value="rail">Railway</option>
                         </select></td>
                     </tr>
                     <tr>
-                        <td colspan="2"><label for="routing-input"><b>Routing (follow roads)</b></label> <input id="routing-input" type="checkbox" name="routing" checked></td>
+                        <td colspan="2"><label for="routing-input"><b>Маршрутизация (с привязкой к дорогам)</b></label> <input id="routing-input" type="checkbox" name="routing" checked></td>
+                    </tr>
+                    <tr>
+                        <td colspan="2"><label for="private-input"><b>Allow private roads</b> <i
+                                    class="fas fa-triangle-exclamation"></i></label> <input id="private-input"
+                                type="checkbox" name="private"></td>
                     </tr>
                     <tr>
                         <td colspan="2"><label for="edit-time-strategy"><b>Time data management</b></label></td>
@@ -180,7 +187,7 @@
         <label id="dist-markers" class="dontselect"><input type="checkbox" id="show-dist-markers" class="custom-button" style="vertical-align: middle;"> Метки расстояния</label>
         <div id="help-text">
         <div style="text-align: center; font-size: 10pt; color: #476947">
-            <b>Ознакомьтесь с <a href="./about.html#guide" target="_blank">Руководством пользователя</a> для получения дополнительной информации!</b>
+            <b>Check out the <a href="./about.html#guide" target="_blank">User Guide</a> for more info and small tutorials!</b>
         </div><br>
         <table style="width: 100%">
             <colgroup>
@@ -435,9 +442,9 @@
         <div id="zone-delete-content" class="popup-content">
             Выберите, что удалить<br>
             <input type="checkbox" id="zone-delete-points" checked><label for="zone-delete-points">Точки трека</label>
-            <input type="checkbox" id="zone-delete-waypoints" checked><label for="zone-delete-waypoints">Путевые точки</label><br>
+            <input type="checkbox" id="zone-delete-waypoints" checked><label for="zone-delete-waypoints">Waypoints</label><br>
             <input type="radio" name="where" id="zone-delete-inside" checked><label for="zone-delete-inside">Внутри выделения</label>
-            <input type="radio" name="where" id="zone-delete-outside"><label for="zone-delete-outside">Снаружи выделения</label><br>
+            <input type="radio" name="where" id="zone-delete-outside"><label for="zone-delete-outside">Outside selection</label><br>
             <div id="zone-delete-ok" class="panels custom-button normal-button">Продолжить</div>
             <div id="zone-delete-cancel" class="panels custom-button normal-button"><b>Отмена</b></div>
         </div>
@@ -512,7 +519,7 @@
         <span id="segment-text">Segment</span>
         <div id="edit-speed-popup-text">
             <div id="speed-text">Скорость</div>
-            <div id="pace-text">Pace</div>
+            <div id="pace-text">Темп</div>
             <div id="start-text">Начало</div>
             <div id="experimental-info-text">Generate speed considering the slope and the activity type<br><b><i class="fas fa-exclamation-triangle"></i> erases all existing time data</b></div>
         </div>
@@ -571,6 +578,7 @@
             <div id="custom-text">Custom</div>
             <div id="world-text">World</div>
             <div id="countries-text">Countries</div>
+            <div id="bulgaria-text">Болгария</div>
             <div id="finland-text">Finland</div>
             <div id="france-text">France</div>
             <div id="new-zealand-text">New Zealand</div>
@@ -618,6 +626,7 @@
             <div id="tram-stop-text">Tram Stop</div>
             <div id="bus-stop-text">Bus Stop</div>
             <div id="ferry-text">Ferry Terminal</div>
+            <div id="barrier-text">Barrier</div>
         </div>
         <h1>онлайн редактор gpx</h1>
         <h1>онлайн просмотрщик gpx</h1>
@@ -632,6 +641,30 @@
         <h1>edit Strava activity</h1>
         <h1>correct Strava activity</h1>
         <h1>merge Strava activities</h1>
+        <div id="new-website-text" style="text-align: left; width:fit-content; max-width: 80dvw; white-space: wrap; padding: 6px;">
+            <p style="text-align: center;"><b>BIG NEWS!</b> 🎉</p>
+
+            I’ve spent the last few months rewriting gpx.studio from scratch and am thrilled to finally share it with you!<br><br>
+
+            Here are some highlights of the new version:
+            <ul>
+            <li>🖥️ A modern look with more accessible menus</li>
+            <li>🌎 A much smoother map experience, now supporting 3D view</li>
+            <li>📈 An interactive elevation profile with more detailed information</li>
+            <li>🛠️ Tools applicable to multiple GPX files at once</li>
+            <li>↔️ An application-wide undo-redo functionality</li>
+            </ul><br>
+
+            🙏 A huge thank you to the community that made this possible through donations, translations and feature suggestions.<br><br>
+
+            🤝 You can help us transition to the future website by:
+            <ul>
+            <li>🐞 Trying it out and reporting any bugs you find</li>
+            <li>📝 Providing feedback on the textual content (and later translating it into other languages)</li>
+            </ul>
+
+            <p style="text-align: center;">🔗 Discover the future of gpx.studio <a href="https://gpx.studio/gpx.studio" target="_blank">here</a>!</p>
+        </div>
         </div>
     </body>
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
@@ -639,7 +672,8 @@
     <script type="text/javascript" src="/include/icon/Leaflet.Icon.Glyph.js"></script>
     <script type="text/javascript" src="/js/data.js"></script>
     <script type="module" src="/include/gpx/gpx.js"></script>
-    <script src='https://api.mapbox.com/mapbox-gl-js/v2.2.0/mapbox-gl.js'></script>
+    <script src='https://api.mapbox.com/mapbox-gl-js/v3.1.2/mapbox-gl.js'></script>
+    <script src='https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-language/v1.0.0/mapbox-gl-language.js'></script>
     <script type="text/javascript" src="/include/elevation/L.Control.Heightgraph.js"></script>
     <script type="text/javascript" src="/js/elevation.js"></script>
     <script type="text/javascript" src="/include/textpath/leaflet.textpath.js"></script>
