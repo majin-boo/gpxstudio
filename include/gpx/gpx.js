@@ -38,304 +38,7 @@
 
 //var L = L || require('leaflet');
 
-const icons = [
-    [" ",{prefix: "", glyph: ""}],
-    ["ATV",{prefix: "", glyph: ""}],
-	["Airport",{prefix: "fas", glyph: "plane"}],
-	["Amusement Park",{prefix: "", glyph: ""}],
-	["Anchor",{prefix: "fas", glyph: "anchor"}],
-	["Anchor Prohibited",{prefix: "", glyph: ""}],
-	["Animal Tracks",{prefix: "fas", glyph: "paw"}],
-	["Asian Food",{prefix: "fas", glyph: "utensils"}],
-	["Bait and Tackle",{prefix: "", glyph: ""}],
-	["Ball Park",{prefix: "fas", glyph: "futbol"}],
-	["Bank",{prefix: "fas", glyph: "dollar-sign"}],
-	["Bar",{prefix: "fas", glyph: "beer"}],
-	["Beach",{prefix: "fas", glyph: "umbrella-beach"}],
-	["Beacon",{prefix: "", glyph: ""}],
-	["Bell",{prefix: "fas", glyph: "bell"}],
-	["Big Game",{prefix: "fas", glyph: "dice"}],
-	["Bike Trail",{prefix: "fas", glyph: "biking"}],
-	["Blind",{prefix: "fas", glyph: "blind"}],
-	["Block, Blue",{prefix: "fas", glyph: "cube"}],
-	["Block, Green",{prefix: "fas", glyph: "cube"}],
-	["Block, Red",{prefix: "fas", glyph: "cube"}],
-	["Blood Trail",{prefix: "", glyph: ""}],
-	["Boat Ramp",{prefix: "fas", glyph: "ship"}],
-	["Border Crossing (Port Of Entry)",{prefix: "", glyph: ""}],
-	["Bottom Conditions",{prefix: "", glyph: ""}],
-	["Bowling",{prefix: "fas", glyph: "bowling-ball"}],
-	["Bridge",{prefix: "fas", glyph: "archway"}],
-	["Building",{prefix: "fas", glyph: "building"}],
-	["Buoy, White",{prefix: "fas", glyph: "life-ring"}],
-	["Campground",{prefix: "fas", glyph: "campground"}],
-	["Car",{prefix: "fas", glyph: "car-side"}],
-	["Car Rental",{prefix: "fas", glyph: "car-side"}],
-	["Car Repair",{prefix: "fas", glyph: "tools"}],
-	["Cemetery",{prefix: "fas", glyph: "cross"}],
-	["Church",{prefix: "fas", glyph: "place-of-worship"}],
-	["Circle with X",{prefix: "fas", glyph: "times-circle"}],
-	["Circle, Blue",{prefix: "fas", glyph: "circle"}],
-	["Circle, Green",{prefix: "fas", glyph: "circle"}],
-	["Circle, Red",{prefix: "fas", glyph: "circle"}],
-	["City (Capitol)",{prefix: "fas", glyph: "city"}],
-	["City (Large)",{prefix: "fas", glyph: "city"}],
-	["City (Medium)",{prefix: "fas", glyph: "city"}],
-	["City (Small)",{prefix: "fas", glyph: "city"}],
-	["City Hall",{prefix: "fas", glyph: "landmark"}],
-	["Civil",{prefix: "fas", glyph: "male"}],
-	["Coast Guard",{prefix: "fas", glyph: "life-ring"}],
-	["Contact, Afro",{prefix: "fas", glyph: "info"}],
-	["Contact, Alien",{prefix: "fas", glyph: "info"}],
-	["Contact, Ball Cap",{prefix: "fas", glyph: "info"}],
-	["Contact, Big Ears",{prefix: "fas", glyph: "info"}],
-	["Contact, Biker",{prefix: "fas", glyph: "info"}],
-	["Contact, Blonde",{prefix: "fas", glyph: "info"}],
-	["Contact, Bug",{prefix: "fas", glyph: "info"}],
-	["Contact, Cat",{prefix: "fas", glyph: "info"}],
-	["Contact, Clown",{prefix: "fas", glyph: "info"}],
-	["Contact, Dog",{prefix: "fas", glyph: "info"}],
-	["Contact, Dreadlocks",{prefix: "fas", glyph: "info"}],
-	["Contact, Female1",{prefix: "fas", glyph: "info"}],
-	["Contact, Female2",{prefix: "fas", glyph: "info"}],
-	["Contact, Female3",{prefix: "fas", glyph: "info"}],
-	["Contact, Glasses",{prefix: "fas", glyph: "info"}],
-	["Contact, Goatee",{prefix: "fas", glyph: "info"}],
-	["Contact, Kung-Fu",{prefix: "fas", glyph: "info"}],
-	["Contact, Panda",{prefix: "fas", glyph: "info"}],
-	["Contact, Pig",{prefix: "fas", glyph: "info"}],
-	["Contact, Pirate",{prefix: "fas", glyph: "info"}],
-	["Contact, Ranger",{prefix: "fas", glyph: "info"}],
-	["Contact, Smiley",{prefix: "fas", glyph: "info"}],
-	["Contact, Spike",{prefix: "fas", glyph: "info"}],
-	["Contact, Sumo",{prefix: "fas", glyph: "info"}],
-	["Controlled Area",{prefix: "fas", glyph: "exclamation"}],
-	["Convenience Store",{prefix: "fas", glyph: "store"}],
-	["Cover",{prefix: "", glyph: ""}],
-	["Covey",{prefix: "", glyph: ""}],
-	["Crossing",{prefix: "fas", glyph: "traffic-light"}],
-	["Dam",{prefix: "fas", glyph: "water"}],
-	["Danger Area",{prefix: "fas", glyph: "exclamation"}],
-	["Deli",{prefix: "fas", glyph: "store"}],
-	["Department Store",{prefix: "fas", glyph: "store"}],
-	["Diamond, Blue",{prefix: "fas", glyph: "gem"}],
-	["Diamond, Green",{prefix: "fas", glyph: "gem"}],
-	["Diamond, Red",{prefix: "fas", glyph: "gem"}],
-	["Diver Down Flag 1",{prefix: "fas", glyph: "flag"}],
-	["Diver Down Flag 2",{prefix: "fas", glyph: "flag"}],
-	["Dock",{prefix: "fas", glyph: "anchor"}],
-	["Dot, White",{prefix: "fas", glyph: "circle"}],
-	["Drinking Water",{prefix: "fas", glyph: "faucet"}],
-	["Dropoff",{prefix: "", glyph: ""}],
-	["Elevation point",{prefix: "fas", glyph: "mountain"}],
-	["Event Cache",{prefix: "fas", glyph: "search"}],
-	["Exit",{prefix: "fas", glyph: "door-open"}],
-	["Exit without services",{prefix: "fas", glyph: "door-open"}],
-	["Fast Food",{prefix: "fas", glyph: "hamburger"}],
-	["First approach fix",{prefix: "", glyph: ""}],
-	["Fishing Area",{prefix: "fas", glyph: "fish"}],
-	["Fishing Hot Spot Facility",{prefix: "fas", glyph: "fish"}],
-	["Fitness Center",{prefix: "fas", glyph: "dumbbell"}],
-	["Flag",{prefix: "fas", glyph: "flag"}],
-	["Flag, Blue",{prefix: "fas", glyph: "flag"}],
-	["Flag, Green",{prefix: "fas", glyph: "flag"}],
-	["Flag, Red",{prefix: "fas", glyph: "flag"}],
-	["Food Source",{prefix: "fas", glyph: "seedling"}],
-	["Forest",{prefix: "fas", glyph: "tree"}],
-	["Furbearer",{prefix: "fas", glyph: "paw"}],
-	["Gambling/casino",{prefix: "fas", glyph: "dice"}],
-	["Gas Station",{prefix: "fas", glyph: "gas-pump"}],
-	["Geocache",{prefix: "fas", glyph: "search"}],
-	["Geocache Found",{prefix: "fas", glyph: "search"}],
-	["Geographic place name, Man-made",{prefix: "fas", glyph: "building"}],
-	["Geographic place name, land",{prefix: "fas", glyph: "globe-europe"}],
-	["Geographic place name, water",{prefix: "fas", glyph: "water"}],
-	["Ghost Town",{prefix: "fas", glyph: "city"}],
-	["Glider Area",{prefix: "fas", glyph: "plane"}],
-	["Golf Course",{prefix: "fas", glyph: "golf-ball"}],
-	["Ground Transportation",{prefix: "fas", glyph: "subway"}],
-	["Heliport",{prefix: "fas", glyph: "helicopter"}],
-	["Horn",{prefix: "fas", glyph: "bullhorn"}],
-	["Hotel",{prefix: "fas", glyph: "hotel"}],
-	["House",{prefix: "fas", glyph: "home"}],
-	["Hunting Area",{prefix: "fas", glyph: "paw"}],
-	["Ice Skating",{prefix: "fas", glyph: "skating"}],
-	["Information",{prefix: "fas", glyph: "info"}],
-	["Intersection",{prefix: "fas", glyph: "traffic-light"}],
-	["Intl freeway hwy",{prefix: "fas", glyph: "road"}],
-	["Intl national hwy",{prefix: "fas", glyph: "road"}],
-	["Italian food",{prefix: "fas", glyph: "pizza"}],
-	["Large Ramp intersection",{prefix: "fas", glyph: "traffic-light"}],
-	["Large exit without services",{prefix: "fas", glyph: "door-open"}],
-	["Letter A, Blue",{prefix: "", glyph: "A"}],
-	["Letter A, Green",{prefix: "", glyph: "A"}],
-	["Letter A, Red",{prefix: "", glyph: "A"}],
-	["Letter B, Blue",{prefix: "", glyph: "B"}],
-	["Letter B, Green",{prefix: "", glyph: "B"}],
-	["Letter B, Red",{prefix: "", glyph: "B"}],
-	["Letter C, Blue",{prefix: "", glyph: "C"}],
-	["Letter C, Green",{prefix: "", glyph: "C"}],
-	["Letter C, Red",{prefix: "", glyph: "C"}],
-	["Letter D, Blue",{prefix: "", glyph: "D"}],
-	["Letter D, Green",{prefix: "", glyph: "D"}],
-	["Letter D, Red",{prefix: "", glyph: "D"}],
-	["Letterbox Cache",{prefix: "fas", glyph: "box-open"}],
-	["Levee",{prefix: "fas", glyph: "anchor"}],
-	["Library",{prefix: "fas", glyph: "book"}],
-	["Light",{prefix: "fas", glyph: "lightbulb"}],
-	["Live Theater",{prefix: "fas", glyph: "theater-masks"}],
-	["Localizer Outer Marker",{prefix: "fas", glyph: "crosshairs"}],
-	["Locationless (Reverse) Cache",{prefix: "fas", glyph: "search"}],
-	["Lodge",{prefix: "fas", glyph: "bed"}],
-	["Lodging",{prefix: "fas", glyph: "bed"}],
-	["Man Overboard",{prefix: "", glyph: ""}],
-	["Marina",{prefix: "fas", glyph: "anchor"}],
-	["Medical Facility",{prefix: "fas", glyph: "clinic-medical"}],
-	["Micro-Cache",{prefix: "fas", glyph: "search"}],
-	["Mile Marker",{prefix: "fas", glyph: "ruler-horizontal"}],
-	["Military",{prefix: "fas", glyph: "fighter-jet"}],
-	["Mine",{prefix: "fas", glyph: "bomb"}],
-	["Missed approach point",{prefix: "", glyph: ""}],
-	["Movie Theater",{prefix: "fas", glyph: "film"}],
-	["Multi-Cache",{prefix: "fas", glyph: "search"}],
-	["Museum",{prefix: "fas", glyph: "monument"}],
-	["Navaid, Amber",{prefix: "fas", glyph: "drafting-compass"}],
-	["Navaid, Black",{prefix: "fas", glyph: "drafting-compass"}],
-	["Navaid, Blue",{prefix: "fas", glyph: "drafting-compass"}],
-	["Navaid, Green",{prefix: "fas", glyph: "drafting-compass"}],
-	["Navaid, Green/Red",{prefix: "fas", glyph: "drafting-compass"}],
-	["Navaid, Green/White",{prefix: "fas", glyph: "drafting-compass"}],
-	["Navaid, Orange",{prefix: "fas", glyph: "drafting-compass"}],
-	["Navaid, Red",{prefix: "fas", glyph: "drafting-compass"}],
-	["Navaid, Red/Green",{prefix: "fas", glyph: "drafting-compass"}],
-	["Navaid, Red/White",{prefix: "fas", glyph: "drafting-compass"}],
-	["Navaid, Violet",{prefix: "fas", glyph: "drafting-compass"}],
-	["Navaid, White",{prefix: "fas", glyph: "drafting-compass"}],
-	["Navaid, White/Green",{prefix: "fas", glyph: "drafting-compass"}],
-	["Navaid, White/Red",{prefix: "fas", glyph: "drafting-compass"}],
-	["Non-directional beacon",{prefix: "", glyph: ""}],
-	["Null",{prefix: "", glyph: ""}],
-	["Number 0, Blue",{prefix: "", glyph: "0"}],
-	["Number 0, Green",{prefix: "", glyph: "0"}],
-	["Number 0, Red",{prefix: "", glyph: "0"}],
-	["Number 1, Blue",{prefix: "", glyph: "1"}],
-	["Number 1, Green",{prefix: "", glyph: "1"}],
-	["Number 1, Red",{prefix: "", glyph: "1"}],
-	["Number 2, Blue",{prefix: "", glyph: "2"}],
-	["Number 2, Green",{prefix: "", glyph: "2"}],
-	["Number 2, Red",{prefix: "", glyph: "2"}],
-	["Number 3, Blue",{prefix: "", glyph: "3"}],
-	["Number 3, Green",{prefix: "", glyph: "3"}],
-	["Number 3, Red",{prefix: "", glyph: "3"}],
-	["Number 4, Blue",{prefix: "", glyph: "4"}],
-	["Number 4, Green",{prefix: "", glyph: "4"}],
-	["Number 4, Red",{prefix: "", glyph: "4"}],
-	["Number 5, Blue",{prefix: "", glyph: "5"}],
-	["Number 5, Green",{prefix: "", glyph: "5"}],
-	["Number 5, Red",{prefix: "", glyph: "5"}],
-	["Number 6, Blue",{prefix: "", glyph: "6"}],
-	["Number 6, Green",{prefix: "", glyph: "6"}],
-	["Number 6, Red",{prefix: "", glyph: "6"}],
-	["Number 7, Blue",{prefix: "", glyph: "7"}],
-	["Number 7, Green",{prefix: "", glyph: "7"}],
-	["Number 7, Red",{prefix: "", glyph: "7"}],
-	["Number 8, Blue",{prefix: "", glyph: "8"}],
-	["Number 8, Green",{prefix: "", glyph: "8"}],
-	["Number 8, Red",{prefix: "", glyph: "8"}],
-	["Number 9, Blue",{prefix: "", glyph: "9"}],
-	["Number 9, Green",{prefix: "", glyph: "9"}],
-	["Number 9, Red",{prefix: "", glyph: "9"}],
-	["Oil Field",{prefix: "fas", glyph: "oil-can"}],
-	["Open 24 Hours",{prefix: "", glyph: ""}],
-	["Oval, Blue",{prefix: "fas", glyph: "circle"}],
-	["Oval, Green",{prefix: "fas", glyph: "circle"}],
-	["Oval, Red",{prefix: "fas", glyph: "circle"}],
-	["Parachute Area",{prefix: "fas", glyph: "parachute-box"}],
-	["Park",{prefix: "fas", glyph: "tree"}],
-	["Parking Area",{prefix: "fas", glyph: "parking"}],
-	["Pharmacy",{prefix: "fas", glyph: "first-aid"}],
-	["Picnic Area",{prefix: "fas", glyph: "utensils"}],
-	["Pin, Blue",{prefix: "fas", glyph: "map-pin"}],
-	["Pin, Green",{prefix: "fas", glyph: "map-pin"}],
-	["Pin, Red",{prefix: "fas", glyph: "map-pin"}],
-	["Pizza",{prefix: "fas", glyph: "pizza"}],
-	["Police Station",{prefix: "fas", glyph: "shield-alt"}],
-	["Post Office",{prefix: "fas", glyph: "envelope"}],
-	["Private Field",{prefix: "fas", glyph: "lock"}],
-	["Puzzle Cache",{prefix: "fas", glyph: "search"}],
-	["RV Park",{prefix: "fas", glyph: "caravan"}],
-	["Radio Beacon",{prefix: "", glyph: ""}],
-	["Ramp intersection",{prefix: "fas", glyph: "traffic-light"}],
-	["Rectangle, Blue",{prefix: "fas", glyph: "square"}],
-	["Rectangle, Green",{prefix: "fas", glyph: "square"}],
-	["Rectangle, Red",{prefix: "fas", glyph: "square"}],
-	["Reef",{prefix: "fas", glyph: "exclamation"}],
-	["Residence",{prefix: "fas", glyph: "home"}],
-	["Restaurant",{prefix: "fas", glyph: "utensils"}],
-	["Restricted Area",{prefix: "fas", glyph: "exclamation"}],
-	["Restroom",{prefix: "fas", glyph: "restroom"}],
-	["Road",{prefix: "fas", glyph: "road"}],
-	["Scales",{prefix: "fas", glyph: "balance-scale"}],
-	["Scenic Area",{prefix: "fas", glyph: "binoculars"}],
-	["School",{prefix: "fas", glyph: "graduation-cap"}],
-	["Seafood",{prefix: "fas", glyph: "fish"}],
-	["Seaplane Base",{prefix: "fas", glyph: "plane"}],
-	["Shipwreck",{prefix: "fas", glyph: "ship"}],
-	["Shopping Center",{prefix: "fas", glyph: "shopping-cart"}],
-	["Short Tower",{prefix: "", glyph: ""}],
-	["Shower",{prefix: "fas", glyph: "shower"}],
-	["Ski Resort",{prefix: "fas", glyph: "skiing"}],
-	["Skiing Area",{prefix: "fas", glyph: "skiing"}],
-	["Skull and Crossbones",{prefix: "fas", glyph: "skull-crossbones"}],
-	["Small City",{prefix: "fas", glyph: "city"}],
-	["Small Game",{prefix: "fas", glyph: "dice"}],
-	["Soft Field",{prefix: "", glyph: ""}],
-	["Square, Blue",{prefix: "fas", glyph: "square"}],
-	["Square, Green",{prefix: "fas", glyph: "square"}],
-	["Square, Red",{prefix: "fas", glyph: "square"}],
-	["Stadium",{prefix: "fas", glyph: "futbol"}],
-	["State Hwy",{prefix: "fas", glyph: "road"}],
-	["Steak",{prefix: "fas", glyph: "utensils"}],
-	["Street Intersection",{prefix: "fas", glyph: "traffic-light"}],
-	["Stump",{prefix: "", glyph: ""}],
-	["Summit",{prefix: "fas", glyph: "mountain"}],
-	["Swimming Area",{prefix: "fas", glyph: "swimmer"}],
-	["TACAN",{prefix: "fas", glyph: "fighter-jet"}],
-	["Tall Tower",{prefix: "", glyph: ""}],
-	["Telephone",{prefix: "fas", glyph: "phone"}],
-	["Tide/Current PRediction Station",{prefix: "", glyph: ""}],
-	["Toll Booth",{prefix: "", glyph: ""}],
-	["TracBack Point",{prefix: "", glyph: ""}],
-	["Trail Head",{prefix: "", glyph: ""}],
-	["Tree Stand",{prefix: "", glyph: ""}],
-	["Treed Quarry",{prefix: "", glyph: ""}],
-	["Triangle, Blue",{prefix: "", glyph: ""}],
-	["Triangle, Green",{prefix: "", glyph: ""}],
-	["Triangle, Red",{prefix: "", glyph: ""}],
-	["Truck",{prefix: "fas", glyph: "truck"}],
-	["Truck Stop",{prefix: "fas", glyph: "truck"}],
-	["Tunnel",{prefix: "fas", glyph: "archway"}],
-	["U Marina",{prefix: "fas", glyph: "anchor"}],
-	["U stump",{prefix: "", glyph: ""}],
-	["US hwy",{prefix: "fas", glyph: "road"}],
-	["Ultralight Area",{prefix: "", glyph: ""}],
-	["Unknown Cache",{prefix: "fas", glyph: "search"}],
-	["Upland Game",{prefix: "", glyph: ""}],
-	["VHF Omni-range",{prefix: "fas", glyph: "fighter-jet"}],
-	["VOR-DME",{prefix: "fas", glyph: "fighter-jet"}],
-	["VOR/TACAN",{prefix: "fas", glyph: "fighter-jet"}],
-	["Virtual cache",{prefix: "fas", glyph: "search"}],
-	["Water Hydrant",{prefix: "fas", glyph: "tint"}],
-	["Water Source",{prefix: "fas", glyph: "faucet"}],
-	["Waterfowl",{prefix: "", glyph: ""}],
-	["Waypoint",{prefix: "fas", glyph: "map-sign"}],
-	["Webcam Cache",{prefix: "fas", glyph: "camera"}],
-	["Weed Bed",{prefix: "fas", glyph: "bed"}],
-	["Winery",{prefix: "fas", glyph: "wine-glass"}],
-	["Wrecker",{prefix: "", glyph: ""}],
-	["Zoo",{prefix: "fas", glyph: "paw"}]
-];
-const iconMap = new Map(icons);
+const iconMap = new Map(window.icons);
 
 var _MAX_POINT_INTERVAL_MS = 15000;
 var _SECOND_IN_MILLIS = 1000;
@@ -360,9 +63,7 @@ var _DEFAULT_MARKER_OPTS = {
   shadowAnchor: [16, 47],
   clickable: true
 };
-var _DEFAULT_POLYLINE_OPTS = {
-  color: 'blue'
-};
+var _DEFAULT_POLYLINE_OPTS = {};
 var _DEFAULT_GPX_OPTS = {
   parseElements: ['track', 'route', 'waypoint'],
   joinTrackSegments: true
@@ -429,8 +130,8 @@ L.GPX = L.FeatureGroup.extend({
   },
 
   // Public methods
-  to_miles:            function(v) { return v / 1.60934; },
-  to_ft:               function(v) { return v * 3.28084; },
+  to_miles:            function(v) { return v / 1.609344; },
+  to_ft:               function(v) { return v * 3.280839895; },
   m_to_km:             function(v) { return v / 1000; },
   m_to_mi:             function(v) { return v / 1609.34; },
 
@@ -553,7 +254,12 @@ L.GPX = L.FeatureGroup.extend({
       hr: {avg: 0, _total: 0, _points: []},
       duration: {start: null, end: null, moving: 0, total: 0},
       atemp: {avg: 0, _total: 0, _points: []},
-      cad: {avg: 0, _total: 0, _points: []}
+      cad: {avg: 0, _total: 0, _points: []},
+      power: {avg: 0, _total: 0, _points: []},
+      npoints: 0,
+      nsegments: 0,
+      ntracks: 0,
+      creator: this._info ? this._info.creator : null,
     };
   },
 
@@ -561,6 +267,7 @@ L.GPX = L.FeatureGroup.extend({
     if (async == undefined) async = this.options.async;
     if (options == undefined) options = this.options;
 
+    var _this = this;
     var req = new window.XMLHttpRequest();
     req.open('GET', url, async);
     try {
@@ -568,7 +275,10 @@ L.GPX = L.FeatureGroup.extend({
     } catch(e) {}
     req.onreadystatechange = function() {
       if (req.readyState != 4) return;
-      if(req.status == 200) cb(req.responseXML, options);
+      if(req.status == 200) {
+          if (req.responseXML) cb(req.responseXML, options);
+          else  _this.fire('error', { err: 'Failed to parse file as XML.'});
+      }
     };
     req.send(null);
   },
@@ -582,6 +292,7 @@ L.GPX = L.FeatureGroup.extend({
         return;
       }
       _this.addLayer(layers);
+      _this._compute_stats();
       _this.fire('loaded', { layers: layers, element: gpx });
     }
     if (input.substr(0,1)==='<') { // direct XML has to start with a <
@@ -613,21 +324,13 @@ L.GPX = L.FeatureGroup.extend({
     if (author.length > 0) {
       this._info.author = author[0].textContent;
     }
+    var creator = xml.getElementsByTagName('gpx')[0].attributes.creator;
+    if (creator) {
+        this._info["creator"] = creator.value;
+    }
     var copyright = xml.getElementsByTagName('copyright');
     if (copyright.length > 0) {
       this._info.copyright = copyright[0].textContent;
-    }
-
-    var color = xml.getElementsByTagName('color');
-    if (color.length > 0) {
-        var s = new Option().style;
-        s.color = color[0].textContent;
-        if (s.color !== '') {
-            this._trace.total.changeColor(this._trace.normal_style.color, color[0].textContent);
-            this._trace.normal_style.color = color[0].textContent;
-            this._trace.focus_style.color = color[0].textContent;
-            this._trace.set_color = true;
-        }
     }
 
     var parseElements = options.gpx_options.parseElements;
@@ -635,7 +338,7 @@ L.GPX = L.FeatureGroup.extend({
       // routes are <rtept> tags inside <rte> sections
       var routes = xml.getElementsByTagName('rte');
       for (i = 0; i < routes.length; i++) {
-        layers = layers.concat(this._parse_segment(routes[i], options, {}, 'rtept'));
+        layers.push(new L.FeatureGroup(this._parse_segment(routes[i], options, {}, 'rtept')));
       }
     }
 
@@ -645,25 +348,35 @@ L.GPX = L.FeatureGroup.extend({
       for (i = 0; i < tracks.length; i++) {
         var track = tracks[i];
         var polyline_options = this._extract_styling(track);
+        var trk = null;
 
         if (options.gpx_options.joinTrackSegments) {
-          layers = layers.concat(this._parse_segment(track, options, polyline_options, 'trkpt'));
+          trk = new L.FeatureGroup(this._parse_segment(track, options, polyline_options, 'trkpt'));
         } else {
           var segments = track.getElementsByTagName('trkseg');
+          var segs = [];
           for (j = 0; j < segments.length; j++) {
-            layers = layers.concat(this._parse_segment(segments[j], options, polyline_options, 'trkpt'));
+            segs = segs.concat(this._parse_segment(segments[j], options, polyline_options, 'trkpt'));
           }
+          trk = new L.FeatureGroup(segs);
         }
+
+        trk.style = polyline_options;
+
+        var trkName = tracks[i].getElementsByTagName('name');
+        if (trkName.length > 0) {
+          trk.name = trkName[0].textContent
+        }
+
+        layers.push(trk);
       }
     }
-
-    this._info.hr.avg = Math.round(this._info.hr._total / this._info.hr._points.length);
-    this._info.cad.avg = Math.round(this._info.cad._total / this._info.cad._points.length);
-    this._info.atemp.avg = Math.round(this._info.atemp._total / this._info.atemp._points.length);
 
     // parse waypoints and add markers for each of them
     if (parseElements.indexOf('waypoint') > -1) {
       el = xml.getElementsByTagName('wpt');
+      var wpts = [];
+
       for (i = 0; i < el.length; i++) {
         var ll = new L.LatLng(
             el[i].getAttribute('lat'),
@@ -701,10 +414,9 @@ L.GPX = L.FeatureGroup.extend({
           sym = symEl[0].textContent;
         }
 
-        var marker = this._get_marker(ll, sym, name, desc, cmt, options);
-        this.fire('addpoint', { point: marker, point_type: 'waypoint', element: el[i] });
-        layers.push(marker);
+        wpts.push(this._get_marker(ll, sym, name, desc, cmt, options));
       }
+      layers.push(new L.FeatureGroup(wpts));
     }
 
     if (layers.length == 0) return null;
@@ -738,18 +450,14 @@ L.GPX = L.FeatureGroup.extend({
               if (trace.buttons.embedding) return;
               if (trace.total.hasFocus) return;
               if (e.originalEvent !== undefined && e.originalEvent.which == 3) return false;
-              map.dragging.disable();
               marker._latlng_origin = marker._latlng;
-              map._draggedMarker = marker;
-              marker.getElement().style.cursor = 'grabbing';
-              trace._draggingWaypoint = true;
           },
           drag: function (e) {
               const pt = map.latLngToLayerPoint(e.latlng);
-              const layers = trace.getLayers();
+              const segments = trace.getSegments();
               var best_pt = null;
-              for (var l=0; l<layers.length; l++) if (layers[l]._latlngs) {
-                  const closest_pt = layers[l].closestLayerPoint(pt);
+              for (var s=0; s<segments.length; s++) {
+                  const closest_pt = segments[s].closestLayerPoint(pt);
                   if (closest_pt && (!best_pt || closest_pt.distance < best_pt.distance)) {
                       best_pt = closest_pt;
                   }
@@ -758,7 +466,13 @@ L.GPX = L.FeatureGroup.extend({
                   marker.setLatLng(map.layerPointToLatLng(best_pt));
               }
           },
-          click: function () {
+          dragend: function (e) {
+              if (marker._latlng != marker._latlng_origin) {
+                  marker._latlng.meta = {'ele': 0};
+                  trace.askElevation([marker._latlng], true);
+              }
+          },
+          click: function (e) {
               if (this.isPopupOpen()) {
                   this.closePopup();
               } else {
@@ -767,25 +481,34 @@ L.GPX = L.FeatureGroup.extend({
                   });
                   marker.bindPopup(popup).openPopup();
                   popup.setContent(`<div style="width: 200px; display: inline-block; overflow-wrap: break-word;">
-                                        `+(trace.buttons.embedding ? '' : (`<div style="float: right;"><i id="edit`+popup._leaflet_id+`" class="fas fa-pencil-alt custom-button" style="display: inline-block" title="Edit info"></i> <i id="clone`+popup._leaflet_id+`" class="fas fa-copy custom-button" style="display: inline-block" title="Duplicate"></i> <i id="delete`+popup._leaflet_id+`" class="fas fa-trash-alt custom-button" style="display: inline-block" title="Delete"></i></div>`))+`
-                                        <div class="wpt-cmt"><b>`+(marker.name.length > 0 ? marker.name : 'empty title')+`</b></div>
-                                        <div class="wpt-cmt">`+(marker.cmt.length > 0 ? (marker.cmt + '<br>') : '')+`<i class="wpt-cmt">`+marker.desc+`</i></div>
+                                        `+(trace.buttons.embedding ? '' : (`<div style="float: right;"><i id="edit`+popup._leaflet_id+`" class="fas fa-pencil-alt custom-button" style="display: inline-block" title="`+trace.buttons.edit_info_text+`"></i> <i id="clone`+popup._leaflet_id+`" class="fas fa-copy custom-button" style="display: inline-block" title="`+trace.buttons.duplicate_text+`"></i> <i id="delete`+popup._leaflet_id+`" class="fas fa-trash-alt custom-button" style="display: inline-block" title="`+trace.buttons.delete_text+`"></i></div>`))+`
+                                        <div class="wpt-cmt"><b>`+(marker.name.length > 0 ? marker.name : trace.buttons.empty_title_text)+`</b></div>
+                                        <div class="wpt-cmt">`+marker._latlng.lat+', '+marker._latlng.lng+' ('+
+                                        (trace.buttons.km ? (L.Util.formatNum(marker._latlng.meta.ele, 0) + trace.buttons.unit_meters_text) : (L.Util.formatNum(marker._latlng.meta.ele * 3.280839895, 0) + trace.buttons.unit_feet_text))
+                                        +')<br>'+
+                                        (marker.cmt.length > 0 ? (marker.cmt + '<br>') : '')+`<i class="wpt-cmt">`+marker.desc+`</i></div>
                                     </div>`);
                   if (!trace.buttons.embedding) {
+                      if (e.originalEvent && e.originalEvent.shiftKey) {
+                          trace.deleteWaypoint(marker);
+                          popup.remove();
+                          return;
+                      }
+
                       const edit = document.getElementById('edit' + popup._leaflet_id);
                       edit.addEventListener('click', function () {
                           popup.setContent(`<div style="width: 300px; display: inline-block; overflow-wrap: break-word;">
-                                         <div>Name</div>
+                                         <div>`+trace.buttons.name_text+`</div>
                                          <div id="name`+popup._leaflet_id+`" contenteditable class="wpt-input"></div>
-                                         <div>Comment (for GPS devices)</div>
+                                         <div>`+trace.buttons.comment_text+`</div>
                                          <div id="cmt`+popup._leaflet_id+`" contenteditable class="wpt-input"></div>
-                                         <div>Description (for users)</div>
+                                         <div>`+trace.buttons.description_text+`</div>
                                          <div id="desc`+popup._leaflet_id+`" contenteditable class="wpt-input"></div>
-                                         <label for="sym`+popup._leaflet_id+`">Symbol</label><br>
+                                         <label for="sym`+popup._leaflet_id+`">`+trace.buttons.symbol_text+`</label><br>
                                          <select type="text" id="sym`+popup._leaflet_id+`" name="sym`+popup._leaflet_id+`" style="width: 100%"></select><br>
                                          <div style="text-align: center">
-                                            <div id="change`+popup._leaflet_id+`" class="panels custom-button normal-button">Ok</div>
-                                            <div id="cancel`+popup._leaflet_id+`" class="panels custom-button normal-button"><b>Cancel</b></div>
+                                            <div id="change`+popup._leaflet_id+`" class="panels custom-button normal-button">`+trace.buttons.ok_button_text+`</div>
+                                            <div id="cancel`+popup._leaflet_id+`" class="panels custom-button normal-button"><b>`+trace.buttons.cancel_button_text+`</b></div>
                                          </div></div>`);
                           const name = document.getElementById('name'+popup._leaflet_id);
                           const cmt = document.getElementById('cmt'+popup._leaflet_id);
@@ -822,6 +545,7 @@ L.GPX = L.FeatureGroup.extend({
                               marker.fire('click');
                           });
                       });
+                      L.DomEvent.on(edit,"click",L.DomEvent.stopPropagation);
 
                       const clone = document.getElementById('clone' + popup._leaflet_id);
                       clone.addEventListener('click', function () {
@@ -857,19 +581,17 @@ L.GPX = L.FeatureGroup.extend({
     var coords = [];
     var markers = [];
     var layers = [];
-    var last = null;
 
     for (var i = 0; i < el.length; i++) {
       var _, ll = new L.LatLng(
         el[i].getAttribute('lat'),
         el[i].getAttribute('lon'));
-      ll.meta = { time: null, ele: null, hr: null, cad: null, atemp: null };
+      ll.meta = { time: null, original_time: false, ele: null, hr: null, cad: null, atemp: null, surface: "missing" };
 
       _ = el[i].getElementsByTagName('time');
       if (_.length > 0) {
         ll.meta.time = new Date(Date.parse(_[0].textContent));
-      } else {
-        ll.meta.time = null;
+        ll.meta.original_time = true;
       }
 
       _ = el[i].getElementsByTagName('ele');
@@ -914,6 +636,27 @@ L.GPX = L.FeatureGroup.extend({
         this._info.atemp._total += ll.meta.atemp;
       }
 
+      _ = el[i].getElementsByTagNameNS('*', 'surface');
+      if (_.length > 0) {
+        if (window.surface_mapping.hasOwnProperty(_[0].textContent)) {
+          ll.meta.surface = _[0].textContent;
+        }
+      }
+
+      _ = el[i].getElementsByTagNameNS('*', 'power');
+      if (_.length > 0) {
+        ll.meta.power = parseInt(_[0].textContent);
+        this._info.power._points.push([this._info.length, ll.meta.power]);
+        this._info.power._total += ll.meta.power;
+      } else {
+          _ = el[i].getElementsByTagNameNS('*', 'PowerInWatts');
+          if (_.length > 0) {
+            ll.meta.power = parseInt(_[0].textContent);
+            this._info.power._points.push([this._info.length, ll.meta.power]);
+            this._info.power._total += ll.meta.power;
+          }
+      }
+
       if (ll.meta.ele > this._info.elevation.max) {
         this._info.elevation.max = ll.meta.ele;
       }
@@ -925,29 +668,6 @@ L.GPX = L.FeatureGroup.extend({
       this._info.elevation._points.push([this._info.length, ll.meta.ele]);
       this._info.duration.end = ll.meta.time;
 
-      if (last != null) {
-        const dist = this._dist2d(last, ll);
-        this._info.length += dist;
-
-        var t = ll.meta.ele - last.meta.ele;
-        if (t > 0) {
-          this._info.elevation.gain += t;
-        } else {
-          this._info.elevation.loss += Math.abs(t);
-        }
-
-        t = Math.abs(ll.meta.time - last.meta.time);
-        this._info.duration.total += t;
-        if (t < options.max_point_interval && (dist/1000)/(t/1000/60/60) >= 0.5) {
-          this._info.duration.moving += t;
-          this._info.moving_length += dist;
-        }
-      } else if (this._info.duration.start == null) {
-        this._info.duration.start = ll.meta.time;
-      }
-      ll._dist = Math.round(this._info.length/1e3*1e5)/1e5;
-
-      last = ll;
       coords.push(ll);
     }
 
@@ -990,20 +710,160 @@ L.GPX = L.FeatureGroup.extend({
     return layers;
   },
 
-  _extract_styling: function(el, base, overrides) {
-    var style = this._merge_objs(_DEFAULT_POLYLINE_OPTS, base);
+  _moving_criterion: function(d, t) {
+      return t < this.options.max_point_interval && (d/1000)/(t/1000/60/60) >= 0.5;
+  },
+
+  _compute_stats: function(start, end) {
+      this._init_info();
+      this._smooth_elevation();
+
+      start = start || 0;
+      end = end || Infinity;
+
+      var in_bounds = function(i) {
+          return i >= start && i <= end;
+      }
+
+      // recompute on remaining data
+      var distance = 0.0, cumul = 0;
+
+      const tracks = this._trace.getTracks();
+      for (var ti=0; ti<tracks.length; ti++) {
+          var inc = false;
+          tracks[ti]._dist = distance;
+          tracks[ti]._elevation = { gain: this._info.elevation.gain, loss: this._info.elevation.loss };
+          tracks[ti]._duration = this._info.duration.moving;
+
+          const segments = this._trace.getSegments(tracks[ti]);
+          for (var l=0; l<segments.length; l++) {
+              segments[l]._dist = distance;
+              segments[l]._elevation = { gain: this._info.elevation.gain, loss: this._info.elevation.loss };
+              segments[l]._duration = this._info.duration.moving;
+              var ll = null, last = null, last_ele = null;
+              var current_ele_window = 0, current_ele_sum = 0;
+              const points = segments[l]._latlngs;
+
+              if (start < cumul+points.length && end >= cumul) {
+                  this._info.nsegments++;
+                  if (!inc) {
+                      inc = true;
+                      this._info.ntracks++;
+                  }
+              }
+
+              for (var i=0; i<points.length; i++) {
+                  ll = points[i];
+                  ll.index = i;
+                  ll.trace_index = cumul + i;
+
+                  if (in_bounds(cumul+i)) {
+                      this._info.npoints++;
+                      this._info.elevation.max = Math.max(ll.meta.ele, this._info.elevation.max);
+                      this._info.elevation.min = Math.min(ll.meta.ele, this._info.elevation.min);
+                      this._info.duration.end = ll.meta.time;
+                  }
+
+                  if (last != null) {
+                      const dist = this._dist2d(last, ll);
+                      if (in_bounds(cumul+i)) this._info.length += dist;
+                      distance += dist;
+
+                      var t = Math.abs(ll.meta.time - last.meta.time);
+                      if (in_bounds(cumul+i) && last.meta.time != null && ll.meta.time != null) {
+                          this._info.duration.total += t;
+                          if (this._moving_criterion(dist, t)) {
+                            this._info.duration.moving += t;
+                            this._info.moving_length += dist;
+                          }
+                      }
+
+                      t = ll.meta.smoothed_ele - last.meta.smoothed_ele;
+                      if (in_bounds(cumul+i)) {
+                          if (t > 0) {
+                            this._info.elevation.gain += t;
+                          } else {
+                            this._info.elevation.loss += Math.abs(t);
+                          }
+                      }
+                  }
+
+                  if (this._info.duration.start == null) {
+                      this._info.duration.start = ll.meta.time;
+                  }
+
+                  ll._dist = distance / 1000;
+                  last = ll;
+              }
+
+              cumul += points.length;
+              segments[l]._dist = distance - segments[l]._dist;
+              segments[l]._elevation.gain = this._info.elevation.gain - segments[l]._elevation.gain;
+              segments[l]._elevation.loss = this._info.elevation.loss - segments[l]._elevation.loss;
+              segments[l]._duration = this._info.duration.moving - segments[l]._duration;
+          }
+
+          tracks[ti]._dist = distance - tracks[ti]._dist;
+          tracks[ti]._elevation.gain = this._info.elevation.gain - tracks[ti]._elevation.gain;
+          tracks[ti]._elevation.loss = this._info.elevation.loss - tracks[ti]._elevation.loss;
+          tracks[ti]._duration = this._info.duration.moving - tracks[ti]._duration;
+      }
+  },
+
+  _smooth_elevation: function() {
+      const ELE_THRESHOLD = 100, SLOPE_THRESHOLD = 100;
+      const tracks = this._trace.getTracks();
+      for (var ti=0; ti<tracks.length; ti++) {
+          const segments = this._trace.getSegments(tracks[ti]);
+          for (var l=0; l<segments.length; l++) {
+              const points = segments[l]._latlngs;
+
+              var start = 0, end = -1, cumul = 0;
+              for (var i=0; i<points.length; i++) {
+                  while (start < i && this._dist2d(points[start], points[i]) > ELE_THRESHOLD) {
+                      cumul -= points[start].meta.ele;
+                      start++;
+                  }
+                  while (end+1 < points.length && this._dist2d(points[i], points[end+1]) <= ELE_THRESHOLD) {
+                      cumul += points[end+1].meta.ele;
+                      end++;
+                  }
+                  points[i].meta.smoothed_ele = cumul / (end - start + 1);
+              }
+
+              if (points.length > 0) {
+                  points[0].meta.smoothed_ele = points[0].meta.ele;
+                  points[points.length-1].meta.smoothed_ele = points[points.length-1].meta.ele;
+              }
+
+              start = 0, end = 0, cumul = 0;
+              for (var i=0; i<points.length; i++) {
+                  while (start < i && this._dist2d(points[start], points[i]) > SLOPE_THRESHOLD) {
+                      cumul -= this._dist2d(points[start], points[start+1]);
+                      start++;
+                  }
+                  while (end+1 < points.length && this._dist2d(points[i], points[end+1]) <= SLOPE_THRESHOLD) {
+                      cumul += this._dist2d(points[end], points[end+1]);
+                      end++;
+                  }
+                  points[i].meta.slope = cumul > 1e-3 ? 100 * (points[end].meta.ele - points[start].meta.ele) / cumul : 0;
+              }
+          }
+      }
+  },
+
+  _extract_styling: function(el) {
+    var style = {};
     var e = el.getElementsByTagNameNS(_GPX_STYLE_NS, 'line');
     if (e.length > 0) {
       var _ = e[0].getElementsByTagName('color');
       if (_.length > 0) style.color = '#' + _[0].textContent;
       var _ = e[0].getElementsByTagName('opacity');
-      if (_.length > 0) style.opacity = _[0].textContent;
+      if (_.length > 0) style.opacity = parseFloat(_[0].textContent);
       var _ = e[0].getElementsByTagName('weight');
-      if (_.length > 0) style.weight = _[0].textContent;
-      var _ = e[0].getElementsByTagName('linecap');
-      if (_.length > 0) style.lineCap = _[0].textContent;
+      if (_.length > 0) style.weight = parseInt(_[0].textContent);
     }
-    return this._merge_objs(style, overrides)
+    return style;
   },
 
   _dist2d: function(a, b) {

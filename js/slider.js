@@ -1,20 +1,3 @@
-// gpx.studio is an online GPX file editor which can be found at https://gpxstudio.github.io
-// Copyright (C) 2020  Vianney Coppé
-//
-// This program is free software; you can redistribute it and/or modify
-// it under the terms of the GNU General Public License as published by
-// the Free Software Foundation; either version 2 of the License, or
-// (at your option) any later version.
-//
-// This program is distributed in the hope that it will be useful,
-// but WITHOUT ANY WARRANTY; without even the implied warranty of
-// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-// GNU General Public License for more details.
-//
-// You should have received a copy of the GNU General Public License along
-// with this program; if not, write to the Free Software Foundation, Inc.,
-// 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
-
 export default class Slider {
     constructor(buttons) {
         this.buttons = buttons;
@@ -61,6 +44,11 @@ export default class Slider {
                 this.getIndex(i),
                 this.getIndex(j)
             );
+            if (this.buttons.total && !this.buttons.total.hasFocus) {
+                const trace = this.buttons.total.traces[this.buttons.total.focusOn];
+                trace.recomputeStats();
+                trace.showData();
+            }
         }
     }
 
@@ -78,17 +66,13 @@ export default class Slider {
 
     hideButtons() {
         this.buttons.validate.style.opacity = 0;
-        this.buttons.unvalidate.style.opacity = 0;
         this.buttons.validate.style.visibility = "hidden";
-        this.buttons.unvalidate.style.visibility = "hidden";
     }
 
     showButtons() {
         if (this.buttons.embedding) return;
         this.buttons.validate.style.opacity = 1;
-        this.buttons.unvalidate.style.opacity = 1;
         this.buttons.validate.style.visibility = "visible";
-        this.buttons.unvalidate.style.visibility = "visible";
     }
 
     reset() {
@@ -96,23 +80,31 @@ export default class Slider {
         this.end.value = this.end.max;
         this.buttons.elev._resetDrag();
         this.hideButtons();
+
+        if (this.buttons.total && !this.buttons.total.hasFocus) {
+            const trace = this.buttons.total.traces[this.buttons.total.focusOn];
+            trace.recomputeStats();
+            trace.showData();
+        }
+    }
+
+    isActive() {
+        return this.start.value != this.start.min || this.end.value != this.end.max;
     }
 
     /*** GPX DATA ***/
 
     getIndex(val) {
-        return this.buttons.elev._findItemForX(parseInt(val)/this.start.max * this.buttons.elev._width());
-    }
-
-    getTraceIndex(val) {
-        return this.buttons.elev._findIndexForX(parseInt(val)/this.start.max * this.buttons.elev._width());
+        if (val == this.start.min) return 0;
+        if (val == this.end.max) return this.buttons.elev._originalData[this.buttons.elev.options.selectedAttributeIdx].length-1;
+        return this.buttons.elev._findItemForX(parseInt(val)/this.start.max * this.buttons.elev._svgWidth);
     }
 
     getIndexStart() {
-        return this.getTraceIndex(this.start.value);
+        return this.buttons.elev._originalData[this.buttons.elev.options.selectedAttributeIdx][this.getIndex(this.start.value)].trace_index;
     }
 
     getIndexEnd() {
-        return this.getTraceIndex(this.end.value);
+        return this.buttons.elev._originalData[this.buttons.elev.options.selectedAttributeIdx][this.getIndex(this.end.value)].trace_index;
     }
 }

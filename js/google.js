@@ -1,20 +1,3 @@
-// gpx.studio is an online GPX file editor which can be found at https://gpxstudio.github.io
-// Copyright (C) 2020  Vianney Coppé
-//
-// This program is free software; you can redistribute it and/or modify
-// it under the terms of the GNU General Public License as published by
-// the Free Software Foundation; either version 2 of the License, or
-// (at your option) any later version.
-//
-// This program is distributed in the hope that it will be useful,
-// but WITHOUT ANY WARRANTY; without even the implied warranty of
-// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-// GNU General Public License for more details.
-//
-// You should have received a copy of the GNU General Public License along
-// with this program; if not, write to the Free Software Foundation, Inc.,
-// 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
-
 export default class Google {
 
     constructor(buttons) {
@@ -24,8 +7,7 @@ export default class Google {
         this.scope = ['https://www.googleapis.com/auth/drive.file',
                       'https://www.googleapis.com/auth/drive.install',
                       'https://www.googleapis.com/auth/drive.readonly'];
-        this.scope2 = 'https://www.googleapis.com/auth/drive.install https://www.googleapis.com/auth/drive.file https://www.googleapis.com/auth/drive.readonly';
-        this.pickerApiLoaded = false;
+        this.scope2 = this.scope.join(' ');
         this.buttons = buttons;
 
         const _this = this;
@@ -33,69 +15,102 @@ export default class Google {
         const queryString = window.location.search;
         const urlParams = new URLSearchParams(queryString);
 
-        gapi.load('client:auth', {
-            callback: function () {
-                gapi.client.init({
-                    apiKey: _this.developerKey,
-                    clientId: _this.clientId,
-                    scope: _this.scope2
-                }).then(function () {
-                    if (urlParams.has('state')) {
-                        const params = JSON.parse(urlParams.get('state'));
-                        if (params.hasOwnProperty('userId')) {
-                            var oauth = gapi.auth2.getAuthInstance();
-                            var user = oauth.currentUser.get();
-                            var isAuthorized = user.hasGrantedScopes(_this.scope2);
-                            if (!isAuthorized || params['userId'] != user.getId()) {
-                                oauth.signIn({
-                                    scope: _this.scope2
-                                }).then(_this.downloadFiles.bind(_this));
-                            } else _this.downloadFiles();
-                        } else _this.downloadFiles();
-                        gtag('event', 'button', {'event_category' : 'open-drive'});
-                    }
-                }, function () {
-                    // private browsing, try to retrieve public files without gapi
-                    if (urlParams.has('state')) {
-                        const params = JSON.parse(urlParams.get('state'));
-                        _this.downloadFiles(true);
-                        gtag('event', 'button', {'event_category' : 'open-drive'});
-                    }
-                });
+        gapi.load('client', {
+            callback: function() {
+                gapi.client.init({})
             }
         });
+
+        var filesLoaded = false;
+
+        this.tokenClient = google.accounts.oauth2.initTokenClient({
+            client_id: this.clientId,
+            scope: this.scope2,
+            callback: (tokenResponse) => {
+                _this.access_token = tokenResponse.access_token;
+                if (tokenResponse.expires_in) _this.refresh_time = Date.now() + tokenResponse.expires_in * 1000;
+
+                if (!filesLoaded && urlParams.has('state')) {
+                    filesLoaded = true;
+                    _this.downloadFiles();
+                }
+
+                if (_this.mustLoadPicker) {
+                    _this.mustLoadPicker = false;
+                    _this.loadPicker();
+                }
+            },
+        });
+
+        if (urlParams.has('state')) {
+            const params = JSON.parse(urlParams.get('state'));
+            if (!buttons.embedding && params.hasOwnProperty('userId')) this.tokenClient.requestAccessToken();
+            else {
+                filesLoaded = true;
+                _this.downloadFiles();
+            }
+        }
     }
 
-    downloadFiles(private_mode) {
+
+    downloadFiles() {
         const queryString = window.location.search;
         const urlParams = new URLSearchParams(queryString);
         const params = JSON.parse(urlParams.get('state'));
         if (!params.ids) return;
-        for (var i=0; i<params.ids.length; i++)
-            this.downloadFile({id:params.ids[i], name:'track.gpx'}, params.hasOwnProperty('userId') && !private_mode);
+
+        params.ids = [...new Set(params.ids)];
+
+        const sortable = this.buttons.sortable;
+        const total = this.buttons.total;
+        var countDone = 0, countOk = 0;
+
+        const index = {};
+        for (var i=0; i<params.ids.length; i++) if (index[params.ids[i]] === undefined) {
+            index[params.ids[i]] = i;
+        }
+
+        for (var i=0; i<params.ids.length; i++) {
+            const file_id = params.ids[i];
+            this.downloadFile(
+                {id:file_id, name:'track.gpx'},
+                function (trace) {
+                    countDone++;
+                    if (trace) {
+                        countOk++;
+                        trace.key = file_id;
+                        for (var j=total.traces.length-countOk; j<total.traces.length-1; j++) {
+                            if (index[total.traces[j].key] > index[file_id]) {
+                                sortable.el.appendChild(total.traces[j].tab);
+                            }
+                        }
+                    }
+                    if (countDone == params.ids.length) {
+                        for (var j=1; j<sortable.el.children.length; j++) {
+                            const tab = sortable.el.children[j];
+                            const trace = tab.trace;
+                            trace.index = j-1;
+                            trace.key = null;
+                            total.traces[trace.index] = trace;
+                            if (trace.hasFocus) {
+                                total.focusOn = trace.index;
+                            }
+                        }
+                    }
+                }
+            );
+        }
     }
 
     loadPicker(folderMode) {
         this.folderMode = folderMode;
-        if (!this.oauthToken)
-            gapi.load('auth', {'callback': this.onAuthApiLoad.bind(this)});
-        gapi.load('picker', {'callback': this.onPickerApiLoad.bind(this)});
-    }
-
-    onAuthApiLoad() {
-        const authResult = gapi.auth.getToken();
-        if (authResult) {
-            this.handleAuthResult(authResult);
-        } else {
-            window.gapi.auth.authorize(
-                {
-                    'client_id': this.clientId,
-                    'scope': this.scope,
-                    'immediate': false
-                },
-                this.handleAuthResult.bind(this)
-            );
+        if (!this.access_token || Date.now() >= this.refresh_time) {
+            this.mustLoadPicker = true;
+            this.tokenClient.requestAccessToken();
+            return;
         }
+        if (this.pickerApiLoaded) this.createPicker();
+        else gapi.load('picker', {'callback': this.onPickerApiLoad.bind(this)});
     }
 
     onPickerApiLoad() {
@@ -103,24 +118,18 @@ export default class Google {
         this.createPicker();
     }
 
-    handleAuthResult(authResult) {
-        if (authResult && !authResult.error) {
-            this.oauthToken = authResult.access_token;
-            this.createPicker();
-        }
-    }
-
     createPicker() {
-        if (this.pickerApiLoaded && this.oauthToken) {
+        if (this.pickerApiLoaded && this.access_token) {
             if (this.folderMode) {
                 var view = new google.picker.DocsView(google.picker.ViewId.FOLDERS)
                     .setSelectFolderEnabled(true);
                 var picker = new google.picker.PickerBuilder()
                     .setAppId(this.appId)
-                    .setOAuthToken(this.oauthToken)
+                    .setOAuthToken(this.access_token)
                     .addView(view)
                     .setDeveloperKey(this.developerKey)
                     .setCallback(this.folderPickerCallback.bind(this))
+                    .setTitle('Select a folder')
                     .build();
                 picker.setVisible(true);
             } else {
@@ -129,7 +138,7 @@ export default class Google {
                     .enableFeature(google.picker.Feature.NAV_HIDDEN)
                     .enableFeature(google.picker.Feature.MULTISELECT_ENABLED)
                     .setAppId(this.appId)
-                    .setOAuthToken(this.oauthToken)
+                    .setOAuthToken(this.access_token)
                     .addView(view)
                     .setDeveloperKey(this.developerKey)
                     .setCallback(this.pickerCallback.bind(this))
@@ -142,8 +151,7 @@ export default class Google {
     pickerCallback(data) {
         if (data.action == google.picker.Action.PICKED) {
             for (var i=0; i<data.docs.length; i++)
-                this.downloadFile(data.docs[i], true);
-            gtag('event', 'button', {'event_category' : 'load-drive'});
+                this.downloadFile(data.docs[i]);
         }
     }
 
@@ -155,14 +163,13 @@ export default class Google {
             const hr = buttons.include_hr.checked;
             const atemp = buttons.include_atemp.checked;
             const cad = buttons.include_cad.checked;
+            const power = buttons.include_power.checked;
+            const surface = buttons.include_surface.checked;
 
-            this.fileIds = [];
-            this.checkAllFilesInFolder(data.docs[0].id, buttons.total.outputGPX(mergeAll, time, hr, atemp, cad));
+            this.checkAllFilesInFolder(data.docs[0].id, buttons.total.outputGPX(mergeAll, time, hr, atemp, cad, power, surface));
 
             buttons.export_window.hide();
             this.window = L.control.window(this.buttons.map,{title:'',content:'Uploading...',className:'panels-container',closeButton:false,visible:true});
-
-            gtag('event', 'button', {'event_category' : 'save-drive'});
         }
     }
 
@@ -173,22 +180,24 @@ export default class Google {
             'method': 'GET',
             'params': {'q': "'" + folderId + "' in parents and trashed=false"},
             callback: function (resp) {
+                _this.fileIds = [];
+                _this.completed = 0;
                 for (var i=0; i<output.length; i++) {
                     var replace = false;
                     for (var j=0; j<resp.items.length; j++) {
                         if (resp.items[j].title == output[i].name) {
-                            _this.saveFile(output[i].name, output[i].text, folderId, output.length, resp.items[j].id);
+                            _this.saveFile(output[i].name, output[i].text, folderId, i, output.length, resp.items[j].id);
                             replace = true;
                             break;
                         }
                     }
-                    if (!replace) _this.saveFile(output[i].name, output[i].text,  folderId, output.length);
+                    if (!replace) _this.saveFile(output[i].name, output[i].text,  folderId, i, output.length);
                 }
             }
         });
     }
 
-    saveFile(filename, filecontent, folderid, number, fileId) {
+    saveFile(filename, filecontent, folderid, index, number, fileId) {
         var file = new Blob([filecontent], {type: 'text/xml'});
         var metadata = {
             'title': filename,
@@ -196,22 +205,21 @@ export default class Google {
             'parents': [{"kind": "drive#parentReference", "id": folderid}]
         };
 
-        var accessToken = gapi.auth.getToken().access_token;
-
         const _this = this;
         const options = {
             file: file,
-            token: accessToken,
+            token: _this.access_token,
             metadata: metadata,
             onComplete: function (resp) {
                 const ans = JSON.parse(resp);
-                _this.fileIds.push(ans.id);
+                _this.completed++;
+                _this.fileIds[index] = ans.id;
                 var request = gapi.client.request({
                     'path': '/drive/v3/files/' + ans.id + '/permissions',
                     'method': 'POST',
                     'headers': {
                         'Content-Type': 'application/json',
-                        'Authorization': 'Bearer ' + accessToken
+                        'Authorization': 'Bearer ' + _this.access_token
                     },
                     'body':{
                         'role': 'reader',
@@ -220,8 +228,8 @@ export default class Google {
                 });
                 request.execute();
 
-                if (_this.fileIds.length == number) {
-                    var url = 'https://gpxstudio.github.io/?state=%7B%22ids%22:%5B%22';
+                if (_this.completed == number) {
+                    var url = 'https://gpx.studio'+window.location.pathname.replace('index.html','')+'?state=%7B%22ids%22:%5B%22';
                     for (var i=0; i<_this.fileIds.length; i++) {
                         url += _this.fileIds[i];
                         if (i<_this.fileIds.length-1) url += '%22,%22';
@@ -254,17 +262,20 @@ export default class Google {
         uploader.upload();
     }
 
-    downloadFile(file, auth) {
+    async downloadFile(file, callback, retry = 0) {
         if (file.name.split('.').pop() != 'gpx') return;
         const buttons = this.buttons;
+
+        if (this.last_request && Date.now() - this.last_request.getTime() < 500) {
+            this.last_request = new Date(this.last_request.getTime() + 500);
+            await buttons.pause(this.last_request.getTime() - Date.now());
+        } else this.last_request = new Date();
 
         const request = new XMLHttpRequest();
         var file_url = 'https://content.googleapis.com/drive/v2/files/'+file.id+'?key='+this.developerKey;
         request.open('GET', file_url, true);
-        if (auth) {
-            const token = gapi.auth.getToken();
-            if (token) request.setRequestHeader('Authorization', 'Bearer ' + token.access_token);
-        }
+        if (this.access_token) request.setRequestHeader('Authorization', 'Bearer ' + this.access_token);
+        const _this = this;
         request.onreadystatechange = function () {
             if (request.readyState == 4 && request.status == 200) {
                 const xhr = new XMLHttpRequest();
@@ -273,17 +284,20 @@ export default class Google {
                 if (file_url) {
                     file_url = file_url.replace('content.google','www.google');
                     xhr.open('GET', file_url, true);
-                    if (auth) {
-                        const token = gapi.auth.getToken();
-                        if (token) xhr.setRequestHeader('Authorization', 'Bearer ' + token.access_token);
-                    }
+                    if (_this.access_token) xhr.setRequestHeader('Authorization', 'Bearer ' + _this.access_token);
                     xhr.onreadystatechange = function () {
                         if (xhr.readyState == 4 && xhr.status == 200) {
-                            buttons.total.addTrace(xhr.response, resp.title);
+                            const trace = buttons.total.addTrace(xhr.response, resp.title, callback);
+                        } else if (xhr.readyState == 4 && xhr.status != 200) {
+                            if (retry > 5) callback();
+                            else _this.downloadFile(file, callback, retry + 1);
                         }
                     }
                     xhr.send();
                 }
+            } else if (request.readyState == 4 && request.status != 200) {
+                if (retry > 5) callback();
+                else _this.downloadFile(file, callback, retry + 1);
             }
         }
         request.send();
